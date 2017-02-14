@@ -1,0 +1,8 @@
+Wed Feb 08 13:16:38 AEDT 2017         QJT123 sent to service
+Wed Feb 08 13:17:08 AEDT 2017         QJT123 returned from service
+Wed Feb 08 13:18:01 AEDT 2017         QJT123 hired by Lab123 odometer120000
+Wed Feb 08 13:19:05 AEDT 2017         QJT123 returned odomter1300000
+Wed Feb 08 13:19:38 AEDT 2017         QJT123 hired by Lab123 odometer1000
+Wed Feb 08 13:19:51 AEDT 2017         QJT123 returned odomter120000
+Wed Feb 08 14:09:17 AEDT 2017         QJT123 hired by Lab123 odometer1000
+Wed Feb 08 14:10:06 AEDT 2017         QJT123 returned odomter1300000

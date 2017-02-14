@@ -36,7 +36,13 @@ public class ManageHiring{
 		
 		
 		
-		
+		/*
+		vehs[0] = new Vehicle("QJT123", "Startlet99", 35.00, 190000);
+		vehs[1] = new PremiumVehicle("QKO156", "Honda Accord 04", 65.00, 125000, 100, 1000000, 5000);
+		vehs[2] = new Vehicle("TUV178", "Toyata Starlet 02", 35.00, 180000);
+		vehs[3] = new Vehicle("SAG132", "Toyata Avalon 05", 52.00, 190000);
+		vehs[4] = new PremiumVehicle("PRE342", "Honda Civic 97", 35, 145000, 120, 12000, 20000);
+        */
 		while(loop != 0){
 		System.out.println("\n\nSelect From Following options :");
 		System.out.println("1. View All Vehicles");
@@ -46,7 +52,8 @@ public class ManageHiring{
 		System.out.println("5. Service Vehicle");
 		System.out.println("6. Complete Service");
 		System.out.println("7. Add new Vehicle");
-		System.out.println(“8. Quit");
+		System.out.println("8. Add new customer");
+		System.out.println("9. Quit");
 		
 		option = sc.next();
 		
@@ -74,8 +81,10 @@ public class ManageHiring{
 		  case "7" :
 			  addVehicle();
 			  break;
-		  
-		  case “8” :
+		  case "8" :
+			  addCustomer();
+			  break;
+		  case "9" :
 			  loop = 0;
 			  break;
 		
@@ -148,7 +157,96 @@ public class ManageHiring{
 		
 	}
 	
+	public static void readCustomer() throws IOException{
 		
+		BufferedReader bufr = new BufferedReader(new FileReader("Customer.txt"));
+		
+		String id; 
+		String name; 
+		int phone; 
+		int experience;
+		double rating;
+		char custType;
+		
+		String line = bufr.readLine();
+		
+		
+        while(line != null){
+			
+			int i = 0;	
+		    String details;
+		
+		    details = line;
+		
+		    String[] splitter = new String[5];
+		
+		    for(String vh : details.split(",")){
+			
+			   splitter[i] = vh;
+			   i++;
+		     }
+		
+		    id =splitter[1];
+		    name = splitter[2];
+		    phone = Integer.parseInt(splitter[3]);
+		   
+		   if((splitter[0]).charAt(0) == 'I'){
+		    	
+		    	 experience = Integer.parseInt(splitter[4]);
+		    	 cust[ARRAY_POSITION2] = new ICustomer(id, name, phone, experience);
+		      }else{
+		    	rating = Double.parseDouble(splitter[4]);
+		    	  cust[ARRAY_POSITION2] = new CorporateCustomer(id, name, phone, rating);
+		     }
+		
+		   ARRAY_POSITION2++;
+		  
+		 line = bufr.readLine();
+        
+        }
+	}
+	
+	public static int custDuplicateCheck(String ID, String nam) throws IOException{
+		
+		
+        BufferedReader bufr = new BufferedReader(new FileReader("Customer.txt"));
+		
+		String id = ID; 
+		String name = nam; 
+		
+
+		String line = bufr.readLine();
+		
+		
+        while(line != null){
+			
+			int i = 0;	
+		    String details;
+		
+		    details = line;
+		
+		    String[] splitter = new String[5];
+		
+		    for(String vh : details.split(",")){
+			
+			   splitter[i] = vh;
+			   i++;
+		     }
+		
+		   if( id.equals(splitter[1])){
+			   System.out.println("ID already exists. Please enter different ID");
+			   return 1;
+		   }else if(name.equals(splitter[2])){
+			   System.out.println("Name already exists. Please enter different name");
+			   return 1;
+		   }else{
+			   line = bufr.readLine();
+		   }
+		    
+		     }
+		
+        return 0;
+	}
 	
 	
 	public static void addCustomer() throws IOException{
@@ -226,6 +324,82 @@ public class ManageHiring{
 	
 	
 
+	public static void addVehicle() throws IOException{
+		int loop = 0;
+		
+		System.out.println("1. Add Vehicle: ");
+		System.out.println("2. Add Premium Vehicle: ");
+		
+		int option = sc.nextInt();
+		
+		do{
+		System.out.println("Enter vehicleID(6 Character): ");
+		
+		String ID = sc.next();
+		String decs;
+		double rate;
+		int odo;
+		int DailyMil = 0;
+	    int ServiceLen = 0;
+	    int Lastservice = 0;
+	    
+	    
+		if(ID.length() != 6){
+			System.out.println("LIMIT ERROR!!!! Please enter again: ");
+		 
+		   }else{
+			   
+			System.out.println("Enter Vehicle Description: ");
+			decs = sc.next();
+			System.out.println("Enter Vehicle Daily-Rate(Doublr): ");
+			rate = sc.nextDouble();
+			System.out.println("Enter Vehicle odometer(Int): ");
+			odo = sc.nextInt();
+			
+			if(option == 2){
+				System.out.print("Enter Daily-Mileage: ");
+				DailyMil = sc.nextInt();
+				System.out.print("Enter Service-Lenght: ");
+			    ServiceLen = sc.nextInt(); 
+			    System.out.print("Enter Last Service: ");
+			    Lastservice = sc.nextInt();
+				
+			}
+			
+			try(FileWriter fw = new FileWriter("Vehicle.txt", true);
+				    BufferedWriter bw = new BufferedWriter(fw);
+				    PrintWriter out = new PrintWriter(bw))
+				{
+				    out.print("\n");
+				    out.print(ID);
+				    out.print(",");
+				    out.print(decs);
+				    out.print(",");
+				    out.print(rate);
+				    out.print(",");
+				    out.print(odo);
+				  
+				    if(option == 2){
+				    	 out.print(",");
+				    	 out.print(DailyMil);
+				    	 out.print(",");
+				    	 out.print(ServiceLen);
+				    	 out.print(",");
+				    	 out.print(Lastservice);
+				    	
+				    }
+				   
+				} catch (IOException e) {
+				    //exception handling left as an exercise for the reader
+				}
+			 ARRAY_FILLED = 0;
+			  ARRAY_POSITION = 0;
+			readVehicle();
+			  loop++;
+		}
+		}while(loop == 0);
+		
+	}
 	
 	
 	
@@ -247,7 +421,40 @@ public class ManageHiring{
 	}
 	}
 	
+	public static int SearchCustomer(){
 		
+		int i = 0;
+		int loop = 0;
+        String CustID = null;
+		
+		while(loop == 0){
+			
+			System.out.println("Enter customer ID: ");
+			String ID = sc.next();
+		
+		while( i < ARRAY_POSITION2 && !ID.equals(CustID)){
+	        
+			CustID = cust[i].getCusID();
+			
+			i++;
+			}
+		
+		     i--;
+		     
+		     if(ID.equals(CustID)){
+		    	 loop = 1;
+		    	 return i;
+		    	 
+		     }else{
+		    	 System.out.println("No entries found. Try again.");
+		    	 loop = 0;
+		    	 i=0;
+		}
+	}
+		   return -1;
+	}
+
+	
 	
 	
 	public static void hireVehicle() throws StatusException, IOException{
